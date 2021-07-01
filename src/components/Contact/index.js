@@ -1,11 +1,21 @@
 import React, { useState } from 'react'
+
 import { validateEmail } from '../../utils/helpers';
 
 function ContactForm() {
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
-  const { name, email, message } = formState;
-  const [errorMessage, setErrorMessage] = useState('');
 
+  const [errorMessage, setErrorMessage] = useState('');
+  const { name, email, message } = formState;
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!errorMessage) {
+      setFormState({ [e.target.name]: e.target.value });
+      console.log('Form', formState);
+    }
+  }
+  
   function handleChange(e) {
     if (e.target.name === 'email') {
       const isValid = validateEmail(e.target.value);
@@ -25,14 +35,9 @@ function ContactForm() {
     }
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log(formState);
-  }
-
   return (
     <section>
-      <h1>Contact Me</h1>
+      <h1 data-testid="h1tag">Contact me</h1>
       <form id='contact-form' onSubmit={handleSubmit}>
         <div>
           <label htmlFor='name'>Name:</label>
@@ -51,7 +56,7 @@ function ContactForm() {
               </div>
           )}
         </div>
-        <button type='submit'>Submit</button>
+        <button data-testid="button" type='submit'>Submit</button>
       </form>
     </section>
   )
